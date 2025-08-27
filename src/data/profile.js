@@ -7,6 +7,6 @@ export const PROFILE = {
     links: {
       github: "https://github.com/christian-ruiz",
       resume: "#", // optional
-      linkedin: "https://www.linkedin.com/in/",
+      linkedin: "https://www.linkedin.com/in/ruiz-christian/",
     },
   };
