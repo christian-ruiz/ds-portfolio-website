@@ -10,8 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./components/ui/dialog";
 import { ScrollArea } from "./components/ui/scroll-area";
 import { Separator } from "./components/ui/separator";
-import { PROFILE } from "./data/projects";
-import { PROJECTS } from "./data/profile"
+import { PROFILE } from "./data/profile";
+import { PROJECTS } from "./data/projects"
 
 // Helpers
 const formatDate = (iso) =>
