@@ -177,8 +177,8 @@ export default function Portfolio() {
       </section>
 
       {/* Paper dialog */}
-      <Dialog open={!!openProject} onOpenChange={(isOpen) => { if (!isOpen) setOpenProject(null); }}>
-        <DialogContent className="w-[90vw] max-w-5xl h-[80vh]">
+      {/* <Dialog open={!!openProject} onOpenChange={(isOpen) => { if (!isOpen) setOpenProject(null); }}>
+        <DialogContent className="sm:max-w-3xl max-h-[85vh] p-0 overflow-hidden">
           {openProject && (
             <div className="grid md:grid-cols-4 h-full">
               <aside className="hidden md:block border-r border-slate-200 dark:border-slate-800 p-4 bg-slate-50/60 dark:bg-slate-900/40">
@@ -205,6 +205,93 @@ export default function Portfolio() {
                   <section id="findings" className="mt-6"><h2>Findings</h2><p>{openProject.paper.findings}</p></section>
                   <section id="conclusions" className="mt-6"><h2>Conclusions & Next Steps</h2><p>{openProject.paper.conclusions}</p></section>
                   <div className="my-8 flex flex-wrap gap-2">{openProject.tags.map((t) => <Badge key={t}>#{t}</Badge>)}</div>
+                </article>
+              </ScrollArea>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog> */}
+      {/* Paper dialog */}
+      <Dialog open={!!openProject} onOpenChange={(isOpen) => { if (!isOpen) setOpenProject(null); }}>
+        <DialogContent className="w-[95vw] max-w-7xl h-[90vh] p-0 overflow-hidden">
+          {openProject && (
+            <div className="grid md:grid-cols-4 h-full">
+              {/* Sidebar */}
+              <aside className="hidden md:block border-r border-slate-200 dark:border-slate-800 p-4 bg-slate-50/60 dark:bg-slate-900/40 h-full overflow-auto">
+                <DialogHeader>
+                  <DialogTitle className="text-base">{openProject.title}</DialogTitle>
+                </DialogHeader>
+                <nav className="mt-4 space-y-2 text-sm">
+                  {[
+                    {id:"abstract",label:"Abstract"},
+                    {id:"data",label:"Data"},
+                    {id:"methods",label:"Methods"},
+                    {id:"approach",label:"Approach"},
+                    {id:"findings",label:"Findings"},
+                    {id:"conclusions",label:"Conclusions"},
+                  ].map(s => (
+                    <a key={s.id} href={`#${s.id}`} className="block hover:underline">{s.label}</a>
+                  ))}
+                </nav>
+                <Separator className="my-4"/>
+                <div className="space-y-2">
+                  {openProject.links?.code && (
+                    <Button asChild className="w-full justify-start gap-2">
+                      <a href={openProject.links.code} target="_blank" rel="noreferrer">
+                        <Github className="h-4 w-4"/> View Code
+                      </a>
+                    </Button>
+                  )}
+                  {openProject.links?.demo && openProject.links.demo !== "#" && (
+                    <Button asChild variant="outline" className="w-full justify-start gap-2">
+                      <a href={openProject.links.demo} target="_blank" rel="noreferrer">
+                        <ExternalLink className="h-4 w-4"/> Live Demo
+                      </a>
+                    </Button>
+                  )}
+                </div>
+              </aside>
+
+              {/* Main content */}
+              <ScrollArea className="md:col-span-3 p-6 h-full">
+                <article className="prose dark:prose-invert max-w-none">
+                  <h1 className="mb-2 text-2xl font-semibold flex items-center gap-2">
+                    {openProject.title} <ArrowUpRight className="h-5 w-5"/>
+                  </h1>
+                  <p className="text-sm text-slate-500 flex items-center gap-2">
+                    <Calendar className="h-4 w-4"/> {formatDate(openProject.date)}
+                  </p>
+                  
+                  <section id="abstract" className="mt-6">
+                    <h2>Abstract</h2>
+                    <p>{openProject.paper.abstract}</p>
+                  </section>
+                  <section id="data" className="mt-6">
+                    <h2>Data</h2>
+                    <p>{openProject.paper.data}</p>
+                  </section>
+                  <section id="methods" className="mt-6">
+                    <h2>Methods</h2>
+                    <p>{openProject.paper.methods}</p>
+                  </section>
+                  <section id="approach" className="mt-6">
+                    <h2>Approach</h2>
+                    <p>{openProject.paper.approach}</p>
+                  </section>
+                  <section id="findings" className="mt-6">
+                    <h2>Findings</h2>
+                    <p>{openProject.paper.findings}</p>
+                  </section>
+                  <section id="conclusions" className="mt-6">
+                    <h2>Conclusions & Next Steps</h2>
+                    <p>{openProject.paper.conclusions}</p>
+                  </section>
+
+                  <div className="my-8 flex flex-wrap gap-2">
+                    {openProject.tags.map((t) => (
+                      <Badge key={t}>#{t}</Badge>
+                    ))}
+                  </div>
                 </article>
               </ScrollArea>
             </div>
