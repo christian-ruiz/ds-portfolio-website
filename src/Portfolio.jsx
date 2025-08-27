@@ -213,7 +213,7 @@ export default function Portfolio() {
       </Dialog> */}
       {/* Paper dialog */}
       <Dialog open={!!openProject} onOpenChange={(isOpen) => { if (!isOpen) setOpenProject(null); }}>
-        <DialogContent className="w-[95vw] max-w-7xl h-[90vh] p-0 overflow-hidden">
+        <DialogContent className="w-[95vw] max-w-7xl max-h-[75vh] p-0 overflow-hidden">
           {openProject && (
             <div className="grid md:grid-cols-4 h-full">
               {/* Sidebar */}
