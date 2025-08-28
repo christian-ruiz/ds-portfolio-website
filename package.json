@@ -9,13 +9,15 @@
     "preview": "vite preview --port 4173"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.6",
+    "@radix-ui/react-scroll-area": "^1.0.5",
+    "@radix-ui/react-tabs": "^1.0.6",
     "framer-motion": "^11.2.6",
     "lucide-react": "^0.424.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "@radix-ui/react-tabs": "^1.0.6",
-    "@radix-ui/react-dialog": "^1.0.6",
-    "@radix-ui/react-scroll-area": "^1.0.5"
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.13",
