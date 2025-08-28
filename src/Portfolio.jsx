@@ -12,10 +12,17 @@ import { ScrollArea } from "./components/ui/scroll-area";
 import { Separator } from "./components/ui/separator";
 import { PROFILE } from "./data/profile";
 import { PROJECTS } from "./data/projects"
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 // Helpers
 const formatDate = (iso) =>
   new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
+
+function rawMdUrl(repo, path = "paper.md", branch = "main") {
+  // repo: "owner/repo", path: "docs/summary.md"
+  return `https://raw.githubusercontent.com/${repo}/${branch}/${path}`;
+}
 
 function useDarkMode() {
   const [dark, setDark] = useState(false);
@@ -29,6 +36,8 @@ export default function Portfolio() {
   const [query, setQuery] = useState("");
   const [activeTags, setActiveTags] = useState([]);
   const [openProject, setOpenProject] = useState(null);
+  const [paperMd, setPaperMd] = useState("");
+  const [paperErr, setPaperErr] = useState("");
 
   const allTags = useMemo(() => {
     const t = new Set();
@@ -46,6 +55,53 @@ export default function Portfolio() {
       })
       .sort((a, b) => new Date(b.date) - new Date(a.date));
   }, [query, activeTags]);
+  
+  useEffect(() => {
+    if (!openProject) {
+      // dialog closed → clear content
+      setPaperMd("");
+      setPaperErr("");
+      return;
+    }
+  
+    let cancelled = false;               // guard against stale updates
+    const currentId = openProject.id;    // track which project we fetched for
+  
+    const tryFetch = async () => {
+      setPaperErr("");
+      setPaperMd("Loading…");
+  
+      const branches = ["main", "master"];
+      for (const br of branches) {
+        const url = rawMdUrl(
+          openProject.repo,                       // "owner/repo"
+          openProject.summaryMd || "README.md",   // path in repo
+          br
+        );
+        try {
+          const res = await fetch(url, { cache: "no-store" });
+          if (res.ok) {
+            const txt = await res.text();
+            if (!cancelled && openProject?.id === currentId) {
+              setPaperMd(txt);
+            }
+            return;
+          }
+        } catch (_) {
+          // try next branch
+        }
+      }
+  
+      if (!cancelled && openProject?.id === currentId) {
+        setPaperMd("");
+        setPaperErr("Could not load the project paper from GitHub.");
+      }
+    };
+  
+    tryFetch();
+  
+    return () => { cancelled = true; };  // cleanup if project changes or dialog closes
+  }, [openProject]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-slate-50 dark:from-slate-950 dark:to-slate-900 text-slate-800 dark:text-slate-100">
@@ -253,7 +309,32 @@ export default function Portfolio() {
               </aside>
 
               {/* Main content */}
-              <ScrollArea className="md:col-span-3 p-6 h-full">
+              {<ScrollArea className="md:col-span-3 p-6 h-full">
+                <article className="prose dark:prose-invert max-w-none">
+                  <h1 className="mb-2 text-2xl font-semibold flex items-center gap-2">
+                    {openProject.title} <ArrowUpRight className="h-5 w-5"/>
+                  </h1>
+                  <p className="text-sm text-slate-500 flex items-center gap-2">
+                    <Calendar className="h-4 w-4"/>{formatDate(openProject.date)}
+                  </p>
+
+                  {paperErr ? (
+                    <p className="mt-6 text-red-600">{paperErr}</p>
+                  ) : (
+                    <div className="mt-6">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {paperMd}
+                      </ReactMarkdown>
+                    </div>
+                  )}
+
+                  {/* tags */}
+                  <div className="my-8 flex flex-wrap gap-2">
+                    {openProject.tags.map((t) => <Badge key={t}>#{t}</Badge>)}
+                  </div>
+                </article>
+              </ScrollArea>
+              /* <ScrollArea className="md:col-span-3 p-6 h-full">
                 <article className="prose dark:prose-invert max-w-none">
                   <h1 className="mb-2 text-2xl font-semibold flex items-center gap-2">
                     {openProject.title} <ArrowUpRight className="h-5 w-5"/>
@@ -293,7 +374,7 @@ export default function Portfolio() {
                     ))}
                   </div>
                 </article>
-              </ScrollArea>
+              </ScrollArea> */}
             </div>
           )}
         </DialogContent>
