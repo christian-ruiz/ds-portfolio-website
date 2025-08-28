@@ -31,7 +31,7 @@ export const PROJECTS = [
       title: "Army F&A Audit AI Tool",
       date: "2020-07-01",
       tags: ["python", "matplotlib", "odeint", "visualization"],
-      repo: "https://github.com/christian-ruiz/Format-Pair-Automation-Tool",
+      repo: "christian-ruiz/Format-Pair-Automation-Tool",
       summaryMd: "docs/paper.md"
     },
   ];
