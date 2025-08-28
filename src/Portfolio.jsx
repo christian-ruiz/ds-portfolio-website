@@ -269,7 +269,7 @@ export default function Portfolio() {
       </Dialog> */}
       {/* Paper dialog */}
       <Dialog open={!!openProject} onOpenChange={(isOpen) => { if (!isOpen) setOpenProject(null); }}>
-        <DialogContent className="w-[95vw] max-w-7xl max-h-[75vh] p-0 overflow-hidden">
+        <DialogContent className="w-[95vw] max-w-7xl h-[80vh] p-0 overflow-hidden">
           {openProject && (
             <div className="grid md:grid-cols-4 h-full">
               {/* Sidebar */}
@@ -309,7 +309,7 @@ export default function Portfolio() {
               </aside>
 
               {/* Main content */}
-              {<ScrollArea className="md:col-span-3 p-6 h-full">
+              {<ScrollArea className="md:col-span-3 h-full p-6">
                 <article className="prose dark:prose-invert max-w-none">
                   <h1 className="mb-2 text-2xl font-semibold flex items-center gap-2">
                     {openProject.title} <ArrowUpRight className="h-5 w-5"/>
@@ -333,48 +333,7 @@ export default function Portfolio() {
                     {openProject.tags.map((t) => <Badge key={t}>#{t}</Badge>)}
                   </div>
                 </article>
-              </ScrollArea>
-              /* <ScrollArea className="md:col-span-3 p-6 h-full">
-                <article className="prose dark:prose-invert max-w-none">
-                  <h1 className="mb-2 text-2xl font-semibold flex items-center gap-2">
-                    {openProject.title} <ArrowUpRight className="h-5 w-5"/>
-                  </h1>
-                  <p className="text-sm text-slate-500 flex items-center gap-2">
-                    <Calendar className="h-4 w-4"/> {formatDate(openProject.date)}
-                  </p>
-                  
-                  <section id="abstract" className="mt-6">
-                    <h2>Abstract</h2>
-                    <p>{openProject.paper.abstract}</p>
-                  </section>
-                  <section id="data" className="mt-6">
-                    <h2>Data</h2>
-                    <p>{openProject.paper.data}</p>
-                  </section>
-                  <section id="methods" className="mt-6">
-                    <h2>Methods</h2>
-                    <p>{openProject.paper.methods}</p>
-                  </section>
-                  <section id="approach" className="mt-6">
-                    <h2>Approach</h2>
-                    <p>{openProject.paper.approach}</p>
-                  </section>
-                  <section id="findings" className="mt-6">
-                    <h2>Findings</h2>
-                    <p>{openProject.paper.findings}</p>
-                  </section>
-                  <section id="conclusions" className="mt-6">
-                    <h2>Conclusions & Next Steps</h2>
-                    <p>{openProject.paper.conclusions}</p>
-                  </section>
-
-                  <div className="my-8 flex flex-wrap gap-2">
-                    {openProject.tags.map((t) => (
-                      <Badge key={t}>#{t}</Badge>
-                    ))}
-                  </div>
-                </article>
-              </ScrollArea> */}
+              </ScrollArea>}
             </div>
           )}
         </DialogContent>
