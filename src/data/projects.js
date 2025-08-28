@@ -27,9 +27,9 @@ export const PROJECTS = [
     //   },
     // },
     {
-      id: "orbital-ode-visualizer",
-      title: "Orbital Dynamics ODE Visualizer",
-      date: "2025-06-05",
+      id: "Format-Pair_Automation-Tool",
+      title: "Army F&A Audit AI Tool",
+      date: "2020-07-01",
       tags: ["python", "matplotlib", "odeint", "visualization"],
       repo: "https://github.com/christian-ruiz/Format-Pair-Automation-Tool",
       summaryMd: "docs/paper.md"
