@@ -195,13 +195,24 @@ export default function Portfolio() {
                         </div>
                       </CardContent>
                       <CardFooter className="flex items-center gap-2">
-                        <Button onClick={() => setOpenProject(p)} className="gap-2"><FileText className="h-4 w-4"/> View Paper</Button>
+                      <Button onClick={() => setOpenProject(p)} className="gap-2">
+                        <FileText className="h-4 w-4"/> View Paper
+                      </Button>
+
+                      {p.links?.code && (
+                        <Button asChild variant="outline" className="gap-2">
+                          <a href={p.links.code} target="_blank" rel="noreferrer">
+                            <Github className="h-4 w-4"/> GitHub
+                          </a>
+                        </Button>
+                      )}
+                        {/* <Button onClick={() => setOpenProject(p)} className="gap-2"><FileText className="h-4 w-4"/> View Paper</Button>
                         {p.links?.code && (
                           <Button asChild variant="outline" className="gap-2"><a href={p.links.code} target="_blank" rel="noreferrer"><Github className="h-4 w-4"/> Code</a></Button>
                         )}
                         {p.links?.demo && p.links.demo !== "#" && (
                           <Button asChild variant="ghost" className="gap-2"><a href={p.links.demo} target="_blank" rel="noreferrer"><ExternalLink className="h-4 w-4"/> Demo</a></Button>
-                        )}
+                        )} */}
                       </CardFooter>
                     </Card>
                   </motion.div>
@@ -313,6 +324,17 @@ export default function Portfolio() {
                 <article className="prose dark:prose-invert max-w-none">
                   <h1 className="mb-2 text-2xl font-semibold flex items-center gap-2">
                     {openProject.title} <ArrowUpRight className="h-5 w-5"/>
+
+                    {openProject.links?.code && (
+                      <a
+                        href={openProject.links.code}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="ml-2 inline-flex items-center text-sm text-slate-600 dark:text-slate-300 hover:underline"
+                      >
+                        <Github className="h-4 w-4 mr-1"/> GitHub
+                      </a>
+                    )}
                   </h1>
                   <p className="text-sm text-slate-500 flex items-center gap-2">
                     <Calendar className="h-4 w-4"/>{formatDate(openProject.date)}
