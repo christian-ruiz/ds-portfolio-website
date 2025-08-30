@@ -211,9 +211,10 @@ export default function Portfolio() {
                           </Button>
 
                           {repoUrl && (
-                            <Button asChild variant="outline" className="gap-2">
-                              <a href={repoUrl} target="_blank" rel="noreferrer">
-                                <Github className="h-4 w-4" /> GitHub
+                            <Button asChild variant="outline" className="gap-2 flex items-center">
+                              <a href={getRepoUrl(p)} target="_blank" rel="noreferrer" className="flex items-center gap-2">
+                                <Github className="h-4 w-4" />
+                                GitHub
                               </a>
                             </Button>
                           )}
@@ -252,9 +253,10 @@ export default function Portfolio() {
                       </Button>
 
                       {repoUrl && (
-                        <Button asChild variant="outline" className="gap-1">
-                          <a href={repoUrl} target="_blank" rel="noreferrer">
-                            <Github className="h-4 w-4" /> GitHub
+                        <Button asChild variant="outline" className="gap-2 flex items-center">
+                          <a href={getRepoUrl(p)} target="_blank" rel="noreferrer" className="flex items-center gap-2">
+                            <Github className="h-4 w-4" />
+                            GitHub
                           </a>
                         </Button>
                       )}
