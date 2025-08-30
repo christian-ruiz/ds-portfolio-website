@@ -23,6 +23,8 @@ function rawMdUrl(repo, path = "paper.md", branch = "main") {
   // repo: "owner/repo", path: "docs/summary.md"
   return `https://raw.githubusercontent.com/${repo}/${branch}/${path}`;
 }
+const getRepoUrl = (proj) =>
+  proj?.links?.code || (proj?.repo ? `https://github.com/${proj.repo}` : "");
 
 function useDarkMode() {
   const [dark, setDark] = useState(false);
@@ -177,67 +179,89 @@ export default function Portfolio() {
           <TabsContent value="grid" className="mt-6">
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               <AnimatePresence>
-                {filtered.map((p) => (
-                  <motion.div key={p.id} layout initial={{opacity:0, y: 10}} animate={{opacity:1, y:0}} exit={{opacity:0, y:-10}}>
-                    <Card className="h-full flex flex-col">
-                      <CardHeader>
-                        <CardTitle className="text-lg flex items-start justify-between gap-3">
-                          <span>{p.title}</span>
-                        </CardTitle>
-                        <CardDescription className="flex items-center gap-2"><Calendar className="h-4 w-4"/>{formatDate(p.date)}</CardDescription>
-                      </CardHeader>
-                      <CardContent className="flex-1">
-                        <p className="text-sm text-slate-700 dark:text-slate-300 line-clamp-4">{p.summary}</p>
-                        <div className="mt-3 flex flex-wrap gap-2">
-                          {p.tags.map((t) => (
-                            <Badge key={t} className="text-xs"><Tag className="h-3 w-3 mr-1"/> {t}</Badge>
-                          ))}
-                        </div>
-                      </CardContent>
-                      <CardFooter className="flex items-center gap-2">
-                      <Button onClick={() => setOpenProject(p)} className="gap-2">
-                        <FileText className="h-4 w-4"/> View Paper
-                      </Button>
+                {filtered.map((p) => {
+                  const repoUrl = getRepoUrl(p); // ✅ declare here, outside JSX
+                  return (
+                    <motion.div key={p.id} layout initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+                      <Card className="h-full flex flex-col">
+                        <CardHeader>
+                          <CardTitle className="text-lg flex items-start justify-between gap-3">
+                            <span>{p.title}</span>
+                          </CardTitle>
+                          <CardDescription className="flex items-center gap-2">
+                            <Calendar className="h-4 w-4" />
+                            {formatDate(p.date)}
+                          </CardDescription>
+                        </CardHeader>
 
-                      {p.links?.code && (
-                        <Button asChild variant="outline" className="gap-2">
-                          <a href={p.links.code} target="_blank" rel="noreferrer">
-                            <Github className="h-4 w-4"/> GitHub
-                          </a>
-                        </Button>
-                      )}
-                        {/* <Button onClick={() => setOpenProject(p)} className="gap-2"><FileText className="h-4 w-4"/> View Paper</Button>
-                        {p.links?.code && (
-                          <Button asChild variant="outline" className="gap-2"><a href={p.links.code} target="_blank" rel="noreferrer"><Github className="h-4 w-4"/> Code</a></Button>
-                        )}
-                        {p.links?.demo && p.links.demo !== "#" && (
-                          <Button asChild variant="ghost" className="gap-2"><a href={p.links.demo} target="_blank" rel="noreferrer"><ExternalLink className="h-4 w-4"/> Demo</a></Button>
-                        )} */}
-                      </CardFooter>
-                    </Card>
-                  </motion.div>
-                ))}
+                        <CardContent className="flex-1">
+                          <p className="text-sm text-slate-700 dark:text-slate-300 line-clamp-4">{p.summary}</p>
+                          <div className="mt-3 flex flex-wrap gap-2">
+                            {p.tags.map((t) => (
+                              <Badge key={t} className="text-xs">
+                                <Tag className="h-3 w-3 mr-1" /> {t}
+                              </Badge>
+                            ))}
+                          </div>
+                        </CardContent>
+
+                        <CardFooter className="flex items-center gap-2">
+                          <Button onClick={() => setOpenProject(p)} className="gap-2">
+                            <FileText className="h-4 w-4" /> View Paper
+                          </Button>
+
+                          {repoUrl && (
+                            <Button asChild variant="outline" className="gap-2">
+                              <a href={repoUrl} target="_blank" rel="noreferrer">
+                                <Github className="h-4 w-4" /> GitHub
+                              </a>
+                            </Button>
+                          )}
+                        </CardFooter>
+                      </Card>
+                    </motion.div>
+                  );
+                })}
               </AnimatePresence>
             </div>
           </TabsContent>
 
           <TabsContent value="timeline" className="mt-8">
             <div className="relative border-l-2 border-slate-200 dark:border-slate-700 pl-6">
-              {filtered.map((p) => (
-                <div key={p.id} className="mb-10">
-                  <div className="absolute -left-[9px] mt-1 h-4 w-4 rounded-full bg-slate-900 dark:bg-slate-100"/>
-                  <h3 className="text-lg font-semibold">{p.title}</h3>
-                  <p className="text-sm text-slate-500 flex items-center gap-2"><Calendar className="h-4 w-4"/>{formatDate(p.date)}</p>
-                  <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">{p.summary}</p>
-                  <div className="mt-2 flex flex-wrap gap-2">{p.tags.map((t) => <Badge key={t} className="text-xs">#{t}</Badge>)}</div>
-                  <div className="mt-3 flex gap-2">
-                    <Button onClick={() => setOpenProject(p)} className="gap-1"><FileText className="h-4 w-4"/> Paper</Button>
-                    {p.links?.code && (
-                      <Button asChild variant="outline" className="gap-1"><a href={p.links.code} target="_blank" rel="noreferrer"><Github className="h-4 w-4"/> Code</a></Button>
-                    )}
+              {filtered.map((p) => {
+                const repoUrl = getRepoUrl(p); // ✅ resolve repo link from links.code or repo
+                return (
+                  <div key={p.id} className="mb-10">
+                    <div className="absolute -left-[9px] mt-1 h-4 w-4 rounded-full bg-slate-900 dark:bg-slate-100" />
+                    <h3 className="text-lg font-semibold">{p.title}</h3>
+                    <p className="text-sm text-slate-500 flex items-center gap-2">
+                      <Calendar className="h-4 w-4" />
+                      {formatDate(p.date)}
+                    </p>
+                    <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">{p.summary}</p>
+
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {p.tags.map((t) => (
+                        <Badge key={t} className="text-xs">#{t}</Badge>
+                      ))}
+                    </div>
+
+                    <div className="mt-3 flex gap-2">
+                      <Button onClick={() => setOpenProject(p)} className="gap-1">
+                        <FileText className="h-4 w-4" /> Paper
+                      </Button>
+
+                      {repoUrl && (
+                        <Button asChild variant="outline" className="gap-1">
+                          <a href={repoUrl} target="_blank" rel="noreferrer">
+                            <Github className="h-4 w-4" /> GitHub
+                          </a>
+                        </Button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </TabsContent>
         </Tabs>
@@ -322,20 +346,19 @@ export default function Portfolio() {
               {/* Main content */}
               {<ScrollArea className="md:col-span-3 h-full p-6">
                 <article className="prose dark:prose-invert max-w-none">
-                  <h1 className="mb-2 text-2xl font-semibold flex items-center gap-2">
-                    {openProject.title} <ArrowUpRight className="h-5 w-5"/>
-
-                    {openProject.links?.code && (
-                      <a
-                        href={openProject.links.code}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="ml-2 inline-flex items-center text-sm text-slate-600 dark:text-slate-300 hover:underline"
-                      >
-                        <Github className="h-4 w-4 mr-1"/> GitHub
-                      </a>
-                    )}
+                <div className="flex items-center justify-between mb-2">
+                  <h1 className="text-2xl font-semibold flex items-center gap-2">
+                    {openProject.title} <ArrowUpRight className="h-5 w-5" />
                   </h1>
+
+                  {getRepoUrl(openProject) && (
+                    <Button asChild variant="outline" className="gap-2">
+                      <a href={getRepoUrl(openProject)} target="_blank" rel="noreferrer">
+                        <Github className="h-4 w-4" /> GitHub
+                      </a>
+                    </Button>
+                  )}
+                </div>
                   <p className="text-sm text-slate-500 flex items-center gap-2">
                     <Calendar className="h-4 w-4"/>{formatDate(openProject.date)}
                   </p>
