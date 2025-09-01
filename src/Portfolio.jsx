@@ -325,13 +325,13 @@ export default function Portfolio() {
                         asChild
                         variant="outline"
                         size="sm"
-                        className="gap-2 h-8 px-3 whitespace-nowrap"
+                        className="gap-2 h-8 px-3 whitespace-nowrap flex items-center"
                       >
                         <a
                           href={getRepoUrl(openProject)}
                           target="_blank"
                           rel="noreferrer"
-                          className="no-underline"
+                          className="flex items-center gap-2 no-underline"
                         >
                           <Github className="h-4 w-4" />
                           GitHub
