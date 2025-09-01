@@ -348,18 +348,32 @@ export default function Portfolio() {
               {/* Main content */}
               {<ScrollArea className="md:col-span-3 h-full p-6">
                 <article className="prose dark:prose-invert max-w-none">
-                <div className="flex items-center justify-between mb-2">
-                  <h1 className="text-2xl font-semibold flex items-center gap-2">
-                    {openProject.title} <ArrowUpRight className="h-5 w-5" />
-                  </h1>
+                <div className="mb-2">
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <h1 className="text-2xl font-semibold tracking-tight flex items-center gap-2">
+                      <span className="truncate">{openProject.title}</span>
+                      <ArrowUpRight className="h-5 w-5" />
+                    </h1>
 
-                  {getRepoUrl(openProject) && (
-                    <Button asChild variant="outline" className="gap-2">
-                      <a href={getRepoUrl(openProject)} target="_blank" rel="noreferrer">
-                        <Github className="h-4 w-4" /> GitHub
-                      </a>
-                    </Button>
-                  )}
+                    {getRepoUrl(openProject) && (
+                      <Button
+                        asChild
+                        variant="outline"
+                        size="sm"
+                        className="gap-2 h-8 px-3 whitespace-nowrap"
+                      >
+                        <a href={getRepoUrl(openProject)} target="_blank" rel="noreferrer" className="flex items-center gap-2">
+                          <Github className="h-4 w-4" />
+                          GitHub
+                        </a>
+                      </Button>
+                    )}
+                  </div>
+
+                  <p className="text-sm text-slate-500 mt-1 flex items-center gap-2">
+                    <Calendar className="h-4 w-4" />
+                    {formatDate(openProject.date)}
+                  </p>
                 </div>
                   <p className="text-sm text-slate-500 flex items-center gap-2">
                     <Calendar className="h-4 w-4"/>{formatDate(openProject.date)}
