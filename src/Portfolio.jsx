@@ -347,10 +347,10 @@ export default function Portfolio() {
 
               {/* Main content */}
               {<ScrollArea className="md:col-span-3 h-full p-6">
-                <article className="prose dark:prose-invert max-w-none">
-                <div className="mb-2">
-                  <div className="flex items-center gap-3 flex-wrap">
-                    <h1 className="text-2xl font-semibold tracking-tight flex items-center gap-2">
+                {/* Header row OUTSIDE prose to avoid link underline */}
+                <div className="not-prose mb-2">
+                  <div className="flex items-baseline gap-3 flex-wrap">
+                    <h1 className="text-2xl leading-tight font-semibold tracking-tight flex items-center gap-2">
                       <span className="truncate">{openProject.title}</span>
                       <ArrowUpRight className="h-5 w-5" />
                     </h1>
@@ -362,7 +362,12 @@ export default function Portfolio() {
                         size="sm"
                         className="gap-2 h-8 px-3 whitespace-nowrap"
                       >
-                        <a href={getRepoUrl(openProject)} target="_blank" rel="noreferrer" className="flex items-center gap-2">
+                        <a
+                          href={getRepoUrl(openProject)}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="no-underline"
+                        >
                           <Github className="h-4 w-4" />
                           GitHub
                         </a>
@@ -370,17 +375,17 @@ export default function Portfolio() {
                     )}
                   </div>
 
-                  <p className="text-sm text-slate-500 mt-1 flex items-center gap-2">
+                  {/* Keep ONE date line */}
+                  <p className="mt-1 text-sm text-slate-500 flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
                     {formatDate(openProject.date)}
                   </p>
                 </div>
-                  <p className="text-sm text-slate-500 flex items-center gap-2">
-                    <Calendar className="h-4 w-4"/>{formatDate(openProject.date)}
-                  </p>
 
+                {/* Markdown body uses prose */}
+                <article className="prose dark:prose-invert max-w-none">
                   {paperErr ? (
-                    <p className="mt-6 text-red-600">{paperErr}</p>
+                    <p className="text-red-600">{paperErr}</p>
                   ) : (
                     <div className="mt-6">
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>
@@ -389,9 +394,10 @@ export default function Portfolio() {
                     </div>
                   )}
 
-                  {/* tags */}
                   <div className="my-8 flex flex-wrap gap-2">
-                    {openProject.tags.map((t) => <Badge key={t}>#{t}</Badge>)}
+                    {openProject.tags.map((t) => (
+                      <Badge key={t}>#{t}</Badge>
+                    ))}
                   </div>
                 </article>
               </ScrollArea>}
